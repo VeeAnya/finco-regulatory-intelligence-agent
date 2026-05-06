@@ -65,7 +65,6 @@ Tools Used
 n8n — workflow automation and agent orchestration
 Tavily Search API — live web search across regulatory sources
 Claude API — regulatory update classification and summarisation
-Pinecone — vector database for duplicate detection and semantic search
 Airtable — compliance audit logging
 Slack — real time alert delivery via incoming webhook
 
@@ -75,11 +74,20 @@ Agentic AI system design using ReAct pattern. Multi source data ingestion from l
 
 Known Issues and Design Decisions
 
-GitHub serves PDF files with application/octet-stream mime type rather than application/pdf. A Code node corrects this before ingestion where applicable. The Basic LLM Chain processes each Tavily result individually and returns separate JSON responses per item. The Code node handles both array and single object responses from Claude to ensure all items flow correctly through the pipeline.
+The Basic LLM Chain processes each Tavily result individually returning a separate JSON response per item. A Code node handles both array and single object responses from Claude ensuring all items flow correctly through the pipeline regardless of response format.
 
 Future Enhancements
 
-Advanced Tavily search depth for production deployment to improve retrieval quality on regulatory sources. Explicit date parameter filtering to surface only content published within the last 24 hours. Separate Tavily API project IDs for development and production environments following standard enterprise credential management practice. Daily email digest to compliance team summarising all LOW and MEDIUM urgency items from the previous 24 hours. Pinecone duplicate detection fully implemented to prevent reprocessing of regulatory updates already seen. Python and LangChain rebuild demonstrating the same architecture in code. Azure AI Search replacing Pinecone in the enterprise Microsoft stack version.
+Advanced Tavily search depth for production deployment to improve retrieval quality on regulatory sources. Explicit date parameter filtering to surface only content published within the last 24 hours. Separate Tavily API project IDs for development and production environments following standard enterprise credential management practice. Daily email digest to compliance team summarising all LOW and MEDIUM urgency items from the previous 24 hours. Pinecone duplicate detection fully implemented to prevent reprocessing of regulatory updates already seen. Python and LangChain rebuild demonstrating the same architecture in code. Azure AI Search replacing Pinecone in the enterprise Microsoft stack version. Pinecone duplicate detection — semantic similarity check before processing each regulatory update to prevent the same guidance being distributed multiple times from different sources. Index created and ready for implementation in v2.
 
-Screenshots
-Coming soon.
+## Screenshots
+
+**Workflow Canvas**
+![Regulatory Agent Workflow](Screenshot-n8n-finco-agent.png)
+
+**Airtable Regulatory Log**
+![Airtable Log](Screenshot-airtable-finco-agent.png)
+
+**Slack Regulatory Alert**
+![Slack Alert](Screenshot-finco-slack-notification.jpeg)
+
