@@ -1,0 +1,797 @@
+{
+  "name": "Finco-Regulatory-Intelligence-Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        64
+      ],
+      "id": "4783d3e4-da7e-44e5-ae10-1d7e6872f75e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": " application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"api_key\": \"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\",\n  \"query\": \"FCA new regulatory guidance 2026\",\n  \"search_depth\": \"basic\",\n  \"max_results\": 5,\n  \"include_answer\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        336,
+        -320
+      ],
+      "id": "f276ea95-527f-4045-9443-3f556e56e7d3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": " application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"api_key\": \"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\",\n  \"query\": \"ICO data protection AI guidance 2026\",\n  \"search_depth\": \"basic\",\n  \"max_results\": 5,\n  \"include_answer\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        336,
+        -144
+      ],
+      "id": "c24641a6-d388-4d84-aaae-07d874d11389",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": " application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"api_key\": \"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\",\n  \"query\": \"EU AI Act new updates implementation 2026\",\n  \"search_depth\": \"basic\",\n  \"max_results\": 5,\n  \"include_answer\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        336,
+        16
+      ],
+      "id": "d4ac33a0-b053-46a0-921b-f962de69dcad",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": " application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"api_key\": \"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\",\n  \"query\": \"Bank of England financial stability AI regulation 2026\",\n  \"search_depth\": \"basic\",\n  \"max_results\": 5,\n  \"include_answer\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        320,
+        176
+      ],
+      "id": "54eb77aa-d5d4-47a6-b833-b660bc2fc33d",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        672,
+        16
+      ],
+      "id": "ab4b07a1-96e7-45f4-93a4-10199df86f43",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2c615ec3-2263-4abd-ba40-296b43d8e4c0",
+              "leftValue": "={{ $json.urgency }}",
+              "rightValue": "=HIGH",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "a2c54ed9-1c0a-4a34-b809-b462b8f20e90",
+              "leftValue": "={{ $json.urgency }}",
+              "rightValue": "=CRITICAL",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "1ed5f746-1fc4-4b3a-99da-33afa5a63b80",
+              "leftValue": "={{ $json.requires_human_review.toString() }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1328,
+        64
+      ],
+      "id": "04021a4d-51a5-4a62-ac2c-25b82038e12d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = [];\n\nfor (const item of $input.all()) {\n  const text = item.json.text;\n  const cleaned = text.replace(/```json\\n?/g, '').replace(/```/g, '').trim();\n  \n  try {\n    const parsed = JSON.parse(cleaned);\n    \n    if (Array.isArray(parsed)) {\n      for (const result of parsed) {\n        items.push({ json: result });\n      }\n    } else {\n      items.push({ json: parsed });\n    }\n  } catch(e) {\n    items.push({ json: { error: e.message, raw: text } });\n  }\n}\n\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        64
+      ],
+      "id": "9089a822-e8fa-4a76-946a-bf45c9406810",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a regulatory intelligence analyst for FinCo UK, a regulated fintech organisation.\n\nYou will be given a list of regulatory search results from multiple sources. Analyse each result and classify it using the following criteria:\n\n1. TYPE: Is this genuinely NEW regulatory guidance, a consultation paper or enforcement notice? Or is it commentary, opinion or analysis of existing rules? Answer: NEW GUIDANCE or COMMENTARY.\n2. REGULATORY BODY: Which body published this? FCA, ICO, Bank of England, PRA, EU AI Act, HM Treasury or OTHER.\n3. TEAMS AFFECTED: Which FinCo teams need to act on this? List all that apply: Compliance, Risk, Technology, HR, Operations.\n4. URGENCY: Rate as CRITICAL, HIGH, MEDIUM or LOW based on implementation timeline and business impact.\n5. CONFIDENCE: How confident are you in this classification? Score from 0 to 100. If below 75 flag for human review.\n6. SUMMARY: Two sentence plain English summary of what changed and why it matters to FinCo UK.\n7. SOURCE URL: Include the direct URL to the source document.\n\nReturn your analysis as a JSON array. One object per result. Use this exact structure:\n\n{\n\"type\": \"NEW GUIDANCE or COMMENTARY\",\n\"regulatory_body\": \"FCA\",\n\"teams_affected\": [\"Compliance\", \"Technology\"],\n\"urgency\": \"HIGH\",\n\"confidence\": 85,\n\"requires_human_review\": false,\n\"summary\": \"Two sentence summary here.\",\n\"source_url\": \"https://...\"\n}\n\nHere are the regulatory search results to classify:\n\n{{ $json.results.map(r => `Title: ${r.title}\\nContent: ${r.content}\\nURL: ${r.url}`).join('\\n\\n---\\n\\n') }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        864,
+        64
+      ],
+      "id": "7fbf6a6f-9e55-4bad-bd80-682914ee807c",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-opus-4-7",
+          "mode": "list",
+          "cachedResultName": "Claude Opus 4.7"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        240
+      ],
+      "id": "43862ea3-0b42-4457-868c-80a78ad3bcd2",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "8qBOPTDUrWWJ8DFe",
+          "name": "Anthropic account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"api_key\": \"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\",\n  \"query\": \"HM Treasury fintech AI regulation 2026\",\n  \"search_depth\": \"basic\",\n  \"max_results\": 5,\n  \"include_answer\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        320,
+        384
+      ],
+      "id": "4a526678-6f47-4bda-b8df-2a9486fab22f",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "YOUR_SLACK_WEBHOOK_URL",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": " application/json",
+        "body": "={\n  \"text\": \"🚨 *REGULATORY ALERT — FinCo UK*\\n\\n*Regulatory Body:* {{ $json.regulatory_body }}\\n*Urgency:* {{ $json.urgency }}\\n*Teams Affected:* {{ $json.teams_affected.join(', ') }}\\n*Requires Human Review:* {{ $json.requires_human_review }}\\n\\n*Summary:*\\n{{ $json.summary }}\\n\\n*Source:* {{ $json.source_url }}\\n\\n_Logged to Airtable audit trail automatically._\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1776,
+        -96
+      ],
+      "id": "bd7962a8-80fa-43d9-9831-ca022024b02a",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "app1ZB0CNzluycZON",
+          "mode": "list",
+          "cachedResultName": " FinCo Regulatory Intelligence.",
+          "cachedResultUrl": "https://airtable.com/app1ZB0CNzluycZON"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOlnF9tpDJTYMQE",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/app1ZB0CNzluycZON/tblOlnF9tpDJTYMQE"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Requires Human Review ": "={{ $('Code in JavaScript').item.json.requires_human_review }}",
+            "Regulatory Body": "={{ $('Code in JavaScript').item.json.regulatory_body }}",
+            "Type": "={{ $('Code in JavaScript').item.json.type }}",
+            "Urgency": "={{ $('Code in JavaScript').item.json.urgency }}",
+            "Teams Affected": "={{ $('Code in JavaScript').item.json.teams_affected.join(', ') }}",
+            "Confidence": "={{ $('Code in JavaScript').item.json.confidence }}",
+            "Summary": "={{ $('Code in JavaScript').item.json.summary }}",
+            "Source URL ": "={{ $('Code in JavaScript').item.json.source_url }}",
+            "Timestamp ": "={{ new Date().toISOString() }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Regulatory Body",
+              "displayName": "Regulatory Body",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Urgency",
+              "displayName": "Urgency",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Teams Affected",
+              "displayName": "Teams Affected",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Confidence",
+              "displayName": "Confidence",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Requires Human Review ",
+              "displayName": "Requires Human Review ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Source URL ",
+              "displayName": "Source URL ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timestamp ",
+              "displayName": "Timestamp ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1520,
+        -96
+      ],
+      "id": "2e20bde3-f32e-4dd8-ab18-c27781c6e53e",
+      "name": "Create or update a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "FTOIdCz4qHROnqhm",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app1ZB0CNzluycZON",
+          "mode": "list",
+          "cachedResultName": " FinCo Regulatory Intelligence.",
+          "cachedResultUrl": "https://airtable.com/app1ZB0CNzluycZON"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOlnF9tpDJTYMQE",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/app1ZB0CNzluycZON/tblOlnF9tpDJTYMQE"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Requires Human Review ": "={{ $('Code in JavaScript').item.json.requires_human_review }}",
+            "Regulatory Body": "={{ $('Code in JavaScript').item.json.regulatory_body }}",
+            "Type": "={{ $('Code in JavaScript').item.json.type }}",
+            "Urgency": "={{ $('Code in JavaScript').item.json.urgency }}",
+            "Teams Affected": "={{ $('Code in JavaScript').item.json.teams_affected.join(', ') }}",
+            "Confidence": "={{ $('Code in JavaScript').item.json.confidence }}",
+            "Summary": "={{ $('Code in JavaScript').item.json.summary }}",
+            "Source URL ": "={{ $('Code in JavaScript').item.json.source_url }}",
+            "Timestamp ": "={{ new Date().toISOString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Regulatory Body",
+              "displayName": "Regulatory Body",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Urgency",
+              "displayName": "Urgency",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Teams Affected",
+              "displayName": "Teams Affected",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Confidence",
+              "displayName": "Confidence",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Requires Human Review ",
+              "displayName": "Requires Human Review ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Source URL ",
+              "displayName": "Source URL ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timestamp ",
+              "displayName": "Timestamp ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1536,
+        208
+      ],
+      "id": "8051a4b8-96ec-46be-add3-cb3522234f2b",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "FTOIdCz4qHROnqhm",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create or update a record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        []
+      ]
+    },
+    "Create or update a record": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "cd37989d-3f92-4e05-b7e1-d82a2d51647e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "85fa1a6e75aa16836557b8060f8c8792f6a12d2fd6fb42ea4fca92964fe5d7d9"
+  },
+  "id": "B6cVVARSkdPek81l",
+  "tags": []
+}
